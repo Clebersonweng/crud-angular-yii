@@ -7,7 +7,7 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log',
-        ['class' => \app\filters\CorsFilter::class,]
+        // ['class' => \app\filters\CorsFilter::class,]
     ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -17,6 +17,10 @@ $config = [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'zBKkPrlR1w5cvHzVbb8dVtJltQnWi2IC',
+            'enableCookieValidation' => false,
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -49,8 +53,13 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'produto'],
-                ['class' => 'yii\rest\UrlRule', 'controller' => 'categoria'],
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'product'],
+                'GET <controller:[\w-]+>/<id:\d+>' => '<controller>/view',
+                'POST <controller:[\w-]+>' => '<controller>/create',
+                'PUT <controller:[\w-]+>/<id:\d+>' => '<controller>/update',
+                'DELETE <controller:[\w-]+>/<id:\d+>' => '<controller>/delete',
+                '<controller:[\w-]+>/<action:[\w-]+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:[\w-]+>/<action:[\w-]+>' => '<controller>/<action>',
             ],
         ],
     ],
@@ -59,6 +68,7 @@ $config = [
         'cors' => [
             'Origin' => ['http://localhost:4200'],
             'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+            // 'Access-Control-Request-Method' => "POST, GET, OPTIONS, PUT, DELETE, PATCH",
             'Access-Control-Request-Headers' => ['*'],
             'Access-Control-Allow-Credentials' => true,
             'Access-Control-Max-Age' => 3600,

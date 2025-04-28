@@ -5,25 +5,25 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `{{%product}}`.
  */
-class m250425_203431_create_produto_table extends Migration
+class m250425_203431_create_product_table extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->createTable('produto', [
+        $this->createTable('product', [
             'id' => $this->primaryKey(),
-            'nome' => $this->string()->notNull(),
-            'quantidade' => $this->integer()->notNull(),
-            'categoria_id' => $this->integer()->notNull(),
+            'name' => $this->string()->notNull(),
+            'quantity' => $this->integer()->notNull(),
+            'category_id' => $this->integer()->notNull(),
         ]);
 
         $this->addForeignKey(
-            'fk_produto_categoria',
-            'produto',
-            'categoria_id',
-            'categoria',
+            'fk_product_category',
+            'product',
+            'category_id',
+            'category',
             'id',
             'CASCADE'
         );
@@ -34,6 +34,6 @@ class m250425_203431_create_produto_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('produto');
+        $this->dropTable('product');
     }
 }
