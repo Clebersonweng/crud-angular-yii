@@ -8,9 +8,20 @@ use app\interface\ProductRepositoryInterface;
 
 class ProductRepository implements ProductRepositoryInterface
 {
-   public function all()
+   public function all():array
    {
-      return Product::find()->with('category')->all();
+      $resProducts =  Product::find()->with('category')->all();
+
+      $products = [];
+      foreach ($resProducts as $product) {
+         $products[] =  [
+            'id' => $product->id, 
+            'name' => $product->name, 
+            'quantity' => $product->quantity, 
+            'category' => $product->category->name
+         ];
+      }
+      return $products;
    }
 
    public function find($id):Array
@@ -28,7 +39,7 @@ class ProductRepository implements ProductRepositoryInterface
       return [];
    }
 
-   public function create($data)
+   public function create(array $data):Product|null
    {
       $product = new Product();
 
@@ -36,19 +47,22 @@ class ProductRepository implements ProductRepositoryInterface
       $product->quantity = $data['quantity'];
       $product->category_id = $data['category'];
       
-      // $product->load($data, '');
       return $product->save() ? $product : null;
    }
 
-   public function update($id, $data)
+   public function update(int $id, array $data) :Product|bool|null
    {
       $product = Product::findOne($id);
       if (!$product) return null;
-      $product->load($data, '');
+
+      $product->name = $data['name'];
+      $product->quantity = $data['quantity'];
+      $product->category_id = $data['category'];
+
       return $product->save() ? $product : null;
    }
 
-   public function delete($id)
+   public function delete(int $id):bool|int
    {
       $product = Product::findOne($id);
       return $product?->delete();

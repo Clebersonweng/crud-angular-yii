@@ -7,7 +7,7 @@ use app\models\Category;
 
 class CategoryController extends Controller
 {
-   public function actionIndex()
+   public function actionIndex():array
    {
       return Category::find()->all();
    }
