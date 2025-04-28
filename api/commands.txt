@@ -1,0 +1,7 @@
+docker exec -it php bash
+
+php yii gii/model --tableName=categoria --modelClass=Categoria
+php yii gii/model --tableName=produto --modelClass=Produto
+
+php yii gii/controller --controllerClass=app\controllers\ProdutoController --actions=index,view,create,update,delete
+php yii migrate
